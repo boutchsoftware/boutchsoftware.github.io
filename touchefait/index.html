@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Touché, c'est fait — le lieu devient le bouton</title>
+  <meta name="description" content="On fait la tâche, on touche l'étiquette NFC, c'est enregistré. Le suivi des petites tâches du foyer, sans liste à ouvrir." />
+  <style>
+    :root {
+      --green:      #2E7D32;
+      --green-dark: #1B5E20;
+      --text:       #212121;
+      --muted:      #757575;
+      --bg:         #F5FBF5;
+      --card:       #FFFFFF;
+      --radius:     14px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      font-size: 17px;
+      line-height: 1.7;
+      color: var(--text);
+      background: var(--bg);
+      padding-bottom: 60px;
+    }
+    header { background: var(--green); color: #fff; padding: 40px 24px 32px; text-align: center; }
+    header h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.5px; }
+    header p  { margin-top: 8px; opacity: .92; font-size: 1.05rem; }
+    main { max-width: 860px; margin: 32px auto 0; padding: 0 20px; }
+    img.hero {
+      width: 100%;
+      height: auto;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 12px rgba(0,0,0,.15);
+      margin-bottom: 28px;
+    }
+    section {
+      background: var(--card); border-radius: var(--radius);
+      padding: 24px 28px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.07);
+    }
+    h2 { font-size: 1.2rem; color: var(--green-dark); margin-bottom: 10px; }
+    ol { padding-left: 22px; }
+    li { margin-bottom: 8px; }
+    .soon {
+      text-align: center;
+      background: #E3F2E4; border-radius: var(--radius);
+      padding: 18px; font-weight: 600; color: var(--green-dark);
+      margin-bottom: 20px;
+    }
+    footer { text-align: center; margin-top: 40px; color: var(--muted); font-size: .85rem; }
+    a { color: var(--green-dark); }
+  </style>
+</head>
+<body>
+<header>
+  <h1>📍 Touché, c'est fait</h1>
+  <p>Le lieu devient le bouton.</p>
+</header>
+
+<main>
+  <img class="hero" src="presentation.jpg"
+       alt="Présentation : placez une étiquette NFC, touchez avec votre téléphone, c'est enregistré." />
+
+  <section>
+    <h2>Le principe, en trois gestes</h2>
+    <ol>
+      <li><strong>Placez une étiquette NFC</strong> là où la tâche se fait : gamelle du chat,
+      lave-vaisselle, plante, poubelles…</li>
+      <li><strong>Touchez l'étiquette</strong> avec votre téléphone une fois la tâche terminée.</li>
+      <li><strong>C'est enregistré</strong> : l'application confirme et vous dit quand il faudra
+      recommencer. Pas de liste à ouvrir, pas de saisie.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Pensée pour le foyer</h2>
+    <p>Qui a nourri le chat ? Le bac jaune est-il sorti ? « À qui le tour » répartit
+    équitablement les tâches partagées, sans points ni classement. Vos données restent sur
+    votre téléphone : pas de compte, pas de publicité, pas de traceurs.</p>
+  </section>
+
+  <div class="soon">L'application arrive bientôt sur Google Play.</div>
+
+  <footer>
+    <p>BoutchSoftware — <a href="mailto:boutchsoftware@gmail.com">boutchsoftware@gmail.com</a></p>
+    <p><a href="https://armen56k.github.io/boutch-pages/touchefait/terms.html">Conditions d'utilisation</a> · <a href="https://armen56k.github.io/boutch-pages/touchefait/privacy.html">Confidentialité</a></p>
+  </footer>
+</main>
+</body>
+</html>
