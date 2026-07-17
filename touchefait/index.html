@@ -3,89 +3,259 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Touché, c'est fait — le lieu devient le bouton</title>
-  <meta name="description" content="On fait la tâche, on touche l'étiquette NFC, c'est enregistré. Le suivi des petites tâches du foyer, sans liste à ouvrir." />
+  <title>Touché, c'est fait — les tâches de la maison, sans liste à ouvrir</title>
+  <meta name="description" content="On fait la tâche, on touche l'étiquette NFC, c'est enregistré. Nourrir le chat, sortir la poubelle, arroser la plante : le foyer sait qui a fait quoi, sans liste à remplir." />
+
+  <!-- Partage social (le lien est envoyé depuis l'app) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Touché, c'est fait — le lieu devient le bouton" />
+  <meta property="og:description" content="On fait la tâche, on touche l'étiquette NFC, c'est enregistré. Pas de points, pas de classement, pas de calendrier." />
+  <meta property="og:image" content="https://boutchsoftware.github.io/touchefait/presentation.jpg" />
+  <meta property="og:url" content="https://boutchsoftware.github.io/touchefait/" />
+  <meta property="og:locale" content="fr_FR" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <style>
     :root {
-      --green:      #2E7D32;
-      --green-dark: #1B5E20;
-      --text:       #212121;
-      --muted:      #757575;
+      --brand:      #2E7D32;
+      --brand-dark: #1B5E20;
+      --teal:       #00796B;
+      --text:       #1d241d;
+      --muted:      #5b6b5c;
       --bg:         #F5FBF5;
       --card:       #FFFFFF;
-      --radius:     14px;
+      --radius:     18px;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      font-size: 17px;
-      line-height: 1.7;
-      color: var(--text);
-      background: var(--bg);
-      padding-bottom: 60px;
+      font-family: 'Segoe UI', system-ui, Arial, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.65;
     }
-    header { background: var(--green); color: #fff; padding: 40px 24px 32px; text-align: center; }
-    header h1 { font-size: 2.2rem; font-weight: 700; letter-spacing: -0.5px; }
-    header p  { margin-top: 8px; opacity: .92; font-size: 1.05rem; }
-    main { max-width: 860px; margin: 32px auto 0; padding: 0 20px; }
-    img.hero {
-      width: 100%;
-      height: auto;
-      border-radius: var(--radius);
-      box-shadow: 0 2px 12px rgba(0,0,0,.15);
-      margin-bottom: 28px;
+
+    .site-nav {
+      background: var(--card); display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 4px 22px; padding: 3px 16px; border-bottom: 1px solid #D6E9D6;
+      box-shadow: 0 1px 3px rgba(0,0,0,.06); position: sticky; top: 0; z-index: 5;
     }
-    section {
-      background: var(--card); border-radius: var(--radius);
-      padding: 24px 28px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(0,0,0,.07);
+    .site-nav a { color: var(--brand-dark); text-decoration: none; font-size: .95rem; padding: 3px 4px; }
+    .site-nav a:hover { text-decoration: underline; }
+    .site-nav a[aria-current="page"] { font-weight: 700; color: var(--text); border-bottom: 2px solid var(--brand); }
+    .site-nav .nav-en { display: none; }
+    body.show-en .site-nav .nav-fr { display: none; }
+    body.show-en .site-nav .nav-en { display: inline; }
+
+    .hero {
+      background: linear-gradient(150deg, #2E7D32 0%, #00796B 100%);
+      color: #fff; text-align: center; padding: 52px 24px 60px;
     }
-    h2 { font-size: 1.2rem; color: var(--green-dark); margin-bottom: 10px; }
-    ol { padding-left: 22px; }
-    li { margin-bottom: 8px; }
-    .soon {
-      text-align: center;
-      background: #E3F2E4; border-radius: var(--radius);
-      padding: 18px; font-weight: 600; color: var(--green-dark);
-      margin-bottom: 20px;
+    .hero img.icon { width: 104px; height: 104px; border-radius: 26px; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+    .hero h1 { font-size: 2.5rem; font-weight: 800; letter-spacing: -1px; margin-top: 18px; }
+    .hero .tagline { font-size: 1.2rem; opacity: .95; margin-top: 8px; }
+
+    main { max-width: 760px; margin: -32px auto 0; padding: 0 18px 60px; }
+    .promise {
+      background: var(--card); border-radius: var(--radius); padding: 30px;
+      box-shadow: 0 4px 18px rgba(0,0,0,.10); text-align: center;
+      font-size: 1.3rem; font-weight: 600; color: var(--brand-dark);
     }
-    footer { text-align: center; margin-top: 40px; color: var(--muted); font-size: .85rem; }
-    a { color: var(--green-dark); }
+    h2 {
+      font-size: .82rem; text-transform: uppercase; letter-spacing: 1.6px;
+      color: var(--brand-dark); font-weight: 700; margin: 40px 0 16px; text-align: center;
+    }
+    img.shot {
+      width: 100%; height: auto; border-radius: var(--radius);
+      box-shadow: 0 2px 12px rgba(0,0,0,.15); display: block;
+    }
+    .steps { counter-reset: step; }
+    .step {
+      background: var(--card); border-radius: 14px; padding: 18px 22px 18px 62px;
+      box-shadow: 0 1px 5px rgba(0,0,0,.07); margin-bottom: 12px; position: relative;
+    }
+    .step::before {
+      counter-increment: step; content: counter(step);
+      position: absolute; left: 18px; top: 18px;
+      width: 30px; height: 30px; border-radius: 50%;
+      background: var(--brand); color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: .95rem;
+    }
+    .step h3 { font-size: 1.05rem; margin-bottom: 2px; }
+    .step p { color: var(--muted); font-size: .95rem; }
+
+    .features { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    @media (max-width: 540px) { .features { grid-template-columns: 1fr; } }
+    .feature { background: var(--card); border-radius: 14px; padding: 20px 22px; box-shadow: 0 1px 5px rgba(0,0,0,.07); }
+    .feature .emoji { font-size: 1.6rem; }
+    .feature h3 { font-size: 1.05rem; margin: 8px 0 4px; }
+    .feature p { color: var(--muted); font-size: .95rem; }
+
+    .intention { background: #E3F2E4; border-left: 4px solid var(--brand); border-radius: 0 14px 14px 0; padding: 22px 26px; }
+    .intention p { margin-bottom: 10px; }
+    .intention p:last-child { margin-bottom: 0; }
+
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 36px; }
+    .btn { display: inline-block; padding: 13px 22px; border-radius: 999px; font-weight: 700; text-decoration: none; font-size: 1rem; }
+    .btn-ghost { background: transparent; color: var(--brand-dark); border: 2px solid var(--brand); }
+    .btn-ghost:hover { background: var(--brand); color: #fff; }
+    .btn-soon { background: #e0ece1; color: var(--muted); cursor: default; }
+
+    footer { text-align: center; color: var(--muted); font-size: .82rem; padding: 24px; }
+    footer a { color: var(--brand-dark); }
+    .lang-switch { text-align: right; max-width: 760px; margin: 14px auto -6px; padding: 0 18px; }
+    .lang-switch a { color: var(--brand-dark); text-decoration: none; font-size: .88rem; border: 1px solid var(--brand); padding: 4px 12px; border-radius: 20px; }
+    .lang-switch a:hover { background: var(--brand); color: #fff; }
+
+    .en { display: none; }
+    body.show-en .fr { display: none; }
+    body.show-en .en { display: block; }
+
+    /* Cibles tactiles >=44px (WCAG) */
+    .site-nav a, .lang-switch a, .btn { min-height: 44px; display: inline-flex; align-items: center; justify-content: center; }
   </style>
 </head>
 <body>
-<header>
-  <h1>📍 Touché, c'est fait</h1>
-  <p>Le lieu devient le bouton.</p>
-</header>
+<script>try{if(localStorage.getItem('bs-lang')==='en')document.body.classList.add('show-en');}catch(e){}</script>
+
+<nav class="site-nav">
+  <a href="https://armen56k.github.io/boutch-pages/index.html"><span class="nav-fr">🏠 Accueil</span><span class="nav-en">🏠 Home</span></a>
+  <a href="https://armen56k.github.io/boutch-pages/pilulo/index.html">Pilulo</a>
+  <a href="https://armen56k.github.io/boutch-pages/prepcalm/index.html">PrepCalm</a>
+  <a href="index.html" aria-current="page">Touché, c'est fait</a>
+</nav>
+
+<div class="hero">
+  <img class="icon" src="icon.png" alt="Icône Touché, c'est fait" width="104" height="104" />
+  <h1>Touché, c'est fait</h1>
+  <p class="tagline fr">Le lieu devient le bouton.</p>
+  <p class="tagline en">The place becomes the button.</p>
+</div>
+
+<div class="lang-switch"><a href="#" onclick="toggleLang(event)">⇄ English version</a></div>
 
 <main>
-  <img class="hero" src="presentation.jpg"
-       alt="Présentation : placez une étiquette NFC, touchez avec votre téléphone, c'est enregistré." />
+  <!-- ═══════════ FR ═══════════ -->
+  <div class="fr">
+    <div class="promise">
+      Qui a nourri le chat ? Le bac jaune est-il sorti ?<br />
+      <strong>On fait la tâche, on touche l'étiquette, c'est enregistré.</strong>
+    </div>
 
-  <section>
     <h2>Le principe, en trois gestes</h2>
-    <ol>
-      <li><strong>Placez une étiquette NFC</strong> là où la tâche se fait : gamelle du chat,
-      lave-vaisselle, plante, poubelles…</li>
-      <li><strong>Touchez l'étiquette</strong> avec votre téléphone une fois la tâche terminée.</li>
-      <li><strong>C'est enregistré</strong> : l'application confirme et vous dit quand il faudra
-      recommencer. Pas de liste à ouvrir, pas de saisie.</li>
-    </ol>
-  </section>
+    <div class="steps">
+      <div class="step">
+        <h3>Collez une étiquette</h3>
+        <p>Là où la tâche se fait : gamelle du chat, lave-vaisselle, plante, poubelles…</p>
+      </div>
+      <div class="step">
+        <h3>Touchez-la avec votre téléphone</h3>
+        <p>Une fois la tâche terminée. Une seconde, pas de formulaire.</p>
+      </div>
+      <div class="step">
+        <h3>C'est fait</h3>
+        <p>L'application confirme et vous dit quand il faudra recommencer. Tout le foyer le voit.</p>
+      </div>
+    </div>
 
-  <section>
-    <h2>Pensée pour le foyer</h2>
-    <p>Qui a nourri le chat ? Le bac jaune est-il sorti ? « À qui le tour » répartit
-    équitablement les tâches partagées, sans points ni classement. Vos données restent sur
-    votre téléphone : pas de compte, pas de publicité, pas de traceurs.</p>
-  </section>
+    <h2>Aperçu</h2>
+    <img class="shot" src="presentation.jpg"
+         alt="Placez une étiquette NFC, touchez avec votre téléphone, la tâche est enregistrée." />
 
-  <div class="soon">L'application arrive bientôt sur Google Play.</div>
+    <h2>Ce qui change</h2>
+    <div class="features">
+      <div class="feature"><div class="emoji">📍</div><h3>Le geste avant l'appli</h3><p>Pas de liste à ouvrir, pas de saisie. L'étiquette rappelle le geste au bon endroit.</p></div>
+      <div class="feature"><div class="emoji">🔄</div><h3>À qui le tour</h3><p>Répartition équitable calculée tâche par tâche. Sans points, sans classement, sans compétition.</p></div>
+      <div class="feature"><div class="emoji">🏠</div><h3>Un état commun</h3><p>Chacun voit ce qui reste à faire. Fini le « je croyais que tu l'avais fait ».</p></div>
+      <div class="feature"><div class="emoji">🔒</div><h3>Vos données restent chez vous</h3><p>Pas de compte, pas de pub, pas de traceurs. L'étiquette ne contient qu'un identifiant aléatoire.</p></div>
+    </div>
 
-  <footer>
-    <p>BoutchSoftware — <a href="mailto:boutchsoftware@gmail.com">boutchsoftware@gmail.com</a></p>
-    <p><a href="https://armen56k.github.io/boutch-pages/touchefait/terms.html">Conditions d'utilisation</a> · <a href="https://armen56k.github.io/boutch-pages/touchefait/privacy.html">Confidentialité</a></p>
-  </footer>
+    <h2>Des exemples</h2>
+    <div class="features">
+      <div class="feature"><div class="emoji">🐱</div><h3>Animaux</h3><p>Nourrir le chat matin et soir, renouveler l'eau, nettoyer la litière.</p></div>
+      <div class="feature"><div class="emoji">🗑️</div><h3>Poubelles</h3><p>Sortir le bac jaune le jeudi, le verre une fois par mois.</p></div>
+      <div class="feature"><div class="emoji">🪴</div><h3>Plantes</h3><p>Arroser sans noyer ni oublier.</p></div>
+      <div class="feature"><div class="emoji">🔧</div><h3>Entretien</h3><p>Changer un filtre tous les 90 jours, détartrer la cafetière, tester un détecteur.</p></div>
+    </div>
+
+    <h2>L'intention derrière</h2>
+    <div class="intention">
+      <p>Les tâches courtes sont faciles à faire, mais difficiles à <strong>coordonner</strong>. Les applications de tâches sont abandonnées parce qu'il faut les ouvrir et les remplir.</p>
+      <p>Alors on a supprimé la saisie. L'action numérique est associée à son emplacement physique : l'étiquette rappelle le geste au bon endroit et permet de l'enregistrer en une seconde.</p>
+      <p>Pas d'intelligence artificielle, pas de points, pas de classement. « Touché, c'est fait » est un outil d'organisation domestique — <strong>pas un dispositif de surveillance ni de preuve</strong>.</p>
+    </div>
+
+    <div class="cta">
+      <span class="btn btn-soon">Bientôt sur Google Play</span>
+      <a class="btn btn-ghost" href="https://armen56k.github.io/boutch-pages/touchefait/privacy.html">Confidentialité</a>
+      <a class="btn btn-ghost" href="https://armen56k.github.io/boutch-pages/touchefait/terms.html">Conditions d'utilisation</a>
+    </div>
+  </div>
+
+  <!-- ═══════════ EN ═══════════ -->
+  <div class="en">
+    <div class="promise">
+      Who fed the cat? Have the bins gone out?<br />
+      <strong>Do the task, tap the sticker, it's logged.</strong>
+    </div>
+
+    <h2>Three gestures</h2>
+    <div class="steps">
+      <div class="step">
+        <h3>Stick a sticker</h3>
+        <p>Right where the task happens: the cat's bowl, the dishwasher, a plant, the bins…</p>
+      </div>
+      <div class="step">
+        <h3>Tap it with your phone</h3>
+        <p>Once the task is done. One second, no form to fill in.</p>
+      </div>
+      <div class="step">
+        <h3>It's done</h3>
+        <p>The app confirms and tells you when it's due again. The whole household sees it.</p>
+      </div>
+    </div>
+
+    <h2>Preview</h2>
+    <img class="shot" src="presentation.jpg"
+         alt="Place an NFC sticker, tap it with your phone, the task is logged." />
+
+    <h2>What changes</h2>
+    <div class="features">
+      <div class="feature"><div class="emoji">📍</div><h3>The gesture, not the app</h3><p>No list to open, no typing. The sticker reminds you of the task in the right place.</p></div>
+      <div class="feature"><div class="emoji">🔄</div><h3>Whose turn</h3><p>Fair sharing computed task by task. No points, no leaderboard, no competition.</p></div>
+      <div class="feature"><div class="emoji">🏠</div><h3>One shared picture</h3><p>Everyone sees what's left to do. No more "I thought you'd done it".</p></div>
+      <div class="feature"><div class="emoji">🔒</div><h3>Your data stays yours</h3><p>No account, no ads, no trackers. A sticker only holds a random identifier.</p></div>
+    </div>
+
+    <h2>Examples</h2>
+    <div class="features">
+      <div class="feature"><div class="emoji">🐱</div><h3>Pets</h3><p>Feed the cat morning and evening, refresh the water, clean the litter.</p></div>
+      <div class="feature"><div class="emoji">🗑️</div><h3>Bins</h3><p>Take the recycling out on Thursday, the glass once a month.</p></div>
+      <div class="feature"><div class="emoji">🪴</div><h3>Plants</h3><p>Water them without drowning or forgetting them.</p></div>
+      <div class="feature"><div class="emoji">🔧</div><h3>Upkeep</h3><p>Change a filter every 90 days, descale the coffee machine, test a smoke alarm.</p></div>
+    </div>
+
+    <h2>The intention behind it</h2>
+    <div class="intention">
+      <p>Short tasks are easy to do but hard to <strong>coordinate</strong>. Task apps get abandoned because you have to open them and fill them in.</p>
+      <p>So we removed the typing. The digital action is tied to its physical place: the sticker reminds you of the task where it happens, and logs it in one second.</p>
+      <p>No artificial intelligence, no points, no leaderboard. "Touché, c'est fait" is a home organisation tool — <strong>not a surveillance or proof device</strong>.</p>
+    </div>
+
+    <div class="cta">
+      <span class="btn btn-soon">Coming soon on Google Play</span>
+      <a class="btn btn-ghost" href="https://armen56k.github.io/boutch-pages/touchefait/privacy.html">Privacy</a>
+      <a class="btn btn-ghost" href="https://armen56k.github.io/boutch-pages/touchefait/terms.html">Terms of Use</a>
+    </div>
+  </div>
 </main>
+
+<footer>
+  <p>Touché, c'est fait · <a href="https://armen56k.github.io/boutch-pages/index.html">BoutchSoftware</a> · <a href="mailto:boutchsoftware@gmail.com">boutchsoftware@gmail.com</a></p>
+</footer>
+
+<script>
+  function applyLangLabel(){var en=document.body.classList.contains('show-en');var l=document.querySelector('.lang-switch a');if(l)l.textContent=en?'⇄ Version française':'⇄ English version';}
+  function toggleLang(e){e.preventDefault();var en=document.body.classList.toggle('show-en');try{localStorage.setItem('bs-lang',en?'en':'fr');}catch(err){}applyLangLabel();}
+  applyLangLabel();
+</script>
 </body>
 </html>
